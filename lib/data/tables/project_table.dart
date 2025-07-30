@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-class Projects extends Table {
+class ProjectsTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().nullable()();

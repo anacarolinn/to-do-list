@@ -1,5 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:to_do_list/data/daos/category_dao.dart';
+import 'package:to_do_list/data/daos/project_dao.dart';
+import 'package:to_do_list/data/daos/task_dao.dart';
 import 'package:to_do_list/data/tables/category_table.dart';
 import 'package:to_do_list/data/tables/project_table.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +25,10 @@ AppDatabase appDatabase(Ref ref) {
 }
 
 // É a classe main do db
-@DriftDatabase(tables: [Tasks, Categories, Projects])
+@DriftDatabase(
+  tables: [TasksTable, CategoriesTable, ProjectsTable],
+  daos: [TaskDao, CategoryDao, ProjectDao],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

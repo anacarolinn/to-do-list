@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-class Categories extends Table {
+class CategoriesTable extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();

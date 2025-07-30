@@ -1,7 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:to_do_list/data/tables/category_table.dart';
+import 'package:to_do_list/data/tables/project_table.dart';
 
-class Tasks extends Table {
+class TasksTable extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
@@ -17,7 +18,8 @@ class Tasks extends Table {
   TextColumn get status => text()();
   TextColumn get prioridade => text()();
 
-  IntColumn get categoryId => integer().references(Categories, #id)();
+  IntColumn get categoryId => integer().references(CategoriesTable, #id)();
+  IntColumn get projectId => integer().references(ProjectsTable, #id)();
 }
 
 enum Status {

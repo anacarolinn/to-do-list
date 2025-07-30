@@ -3,12 +3,12 @@
 part of 'app_database.dart';
 
 // ignore_for_file: type=lint
-class $CategoriesTable extends Categories
-    with TableInfo<$CategoriesTable, Category> {
+class $CategoriesTableTable extends CategoriesTable
+    with TableInfo<$CategoriesTableTable, CategoriesTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $CategoriesTable(this.attachedDatabase, [this._alias]);
+  $CategoriesTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -48,9 +48,10 @@ class $CategoriesTable extends Categories
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'categories';
+  static const String $name = 'categories_table';
   @override
-  VerificationContext validateIntegrity(Insertable<Category> instance,
+  VerificationContext validateIntegrity(
+      Insertable<CategoriesTableData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -83,9 +84,9 @@ class $CategoriesTable extends Categories
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Category map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CategoriesTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Category(
+    return CategoriesTableData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       createdAt: attachedDatabase.typeMapping
@@ -100,18 +101,19 @@ class $CategoriesTable extends Categories
   }
 
   @override
-  $CategoriesTable createAlias(String alias) {
-    return $CategoriesTable(attachedDatabase, alias);
+  $CategoriesTableTable createAlias(String alias) {
+    return $CategoriesTableTable(attachedDatabase, alias);
   }
 }
 
-class Category extends DataClass implements Insertable<Category> {
+class CategoriesTableData extends DataClass
+    implements Insertable<CategoriesTableData> {
   final int id;
   final DateTime createdAt;
   final DateTime? updatedAt;
   final String name;
   final String color;
-  const Category(
+  const CategoriesTableData(
       {required this.id,
       required this.createdAt,
       this.updatedAt,
@@ -130,8 +132,8 @@ class Category extends DataClass implements Insertable<Category> {
     return map;
   }
 
-  CategoriesCompanion toCompanion(bool nullToAbsent) {
-    return CategoriesCompanion(
+  CategoriesTableCompanion toCompanion(bool nullToAbsent) {
+    return CategoriesTableCompanion(
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: updatedAt == null && nullToAbsent
@@ -142,10 +144,10 @@ class Category extends DataClass implements Insertable<Category> {
     );
   }
 
-  factory Category.fromJson(Map<String, dynamic> json,
+  factory CategoriesTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Category(
+    return CategoriesTableData(
       id: serializer.fromJson<int>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
@@ -165,21 +167,21 @@ class Category extends DataClass implements Insertable<Category> {
     };
   }
 
-  Category copyWith(
+  CategoriesTableData copyWith(
           {int? id,
           DateTime? createdAt,
           Value<DateTime?> updatedAt = const Value.absent(),
           String? name,
           String? color}) =>
-      Category(
+      CategoriesTableData(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
         name: name ?? this.name,
         color: color ?? this.color,
       );
-  Category copyWithCompanion(CategoriesCompanion data) {
-    return Category(
+  CategoriesTableData copyWithCompanion(CategoriesTableCompanion data) {
+    return CategoriesTableData(
       id: data.id.present ? data.id.value : this.id,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -190,7 +192,7 @@ class Category extends DataClass implements Insertable<Category> {
 
   @override
   String toString() {
-    return (StringBuffer('Category(')
+    return (StringBuffer('CategoriesTableData(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -205,7 +207,7 @@ class Category extends DataClass implements Insertable<Category> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Category &&
+      (other is CategoriesTableData &&
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
@@ -213,20 +215,20 @@ class Category extends DataClass implements Insertable<Category> {
           other.color == this.color);
 }
 
-class CategoriesCompanion extends UpdateCompanion<Category> {
+class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
   final Value<int> id;
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
   final Value<String> name;
   final Value<String> color;
-  const CategoriesCompanion({
+  const CategoriesTableCompanion({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.name = const Value.absent(),
     this.color = const Value.absent(),
   });
-  CategoriesCompanion.insert({
+  CategoriesTableCompanion.insert({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -234,7 +236,7 @@ class CategoriesCompanion extends UpdateCompanion<Category> {
     required String color,
   })  : name = Value(name),
         color = Value(color);
-  static Insertable<Category> custom({
+  static Insertable<CategoriesTableData> custom({
     Expression<int>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -250,13 +252,13 @@ class CategoriesCompanion extends UpdateCompanion<Category> {
     });
   }
 
-  CategoriesCompanion copyWith(
+  CategoriesTableCompanion copyWith(
       {Value<int>? id,
       Value<DateTime>? createdAt,
       Value<DateTime?>? updatedAt,
       Value<String>? name,
       Value<String>? color}) {
-    return CategoriesCompanion(
+    return CategoriesTableCompanion(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -288,7 +290,7 @@ class CategoriesCompanion extends UpdateCompanion<Category> {
 
   @override
   String toString() {
-    return (StringBuffer('CategoriesCompanion(')
+    return (StringBuffer('CategoriesTableCompanion(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -299,11 +301,436 @@ class CategoriesCompanion extends UpdateCompanion<Category> {
   }
 }
 
-class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
+class $ProjectsTableTable extends ProjectsTable
+    with TableInfo<$ProjectsTableTable, ProjectsTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TasksTable(this.attachedDatabase, [this._alias]);
+  $ProjectsTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _startDateMeta =
+      const VerificationMeta('startDate');
+  @override
+  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
+      'start_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _finalDateMeta =
+      const VerificationMeta('finalDate');
+  @override
+  late final GeneratedColumn<DateTime> finalDate = GeneratedColumn<DateTime>(
+      'final_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        createdAt,
+        updatedAt,
+        name,
+        description,
+        startDate,
+        finalDate,
+        status
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'projects_table';
+  @override
+  VerificationContext validateIntegrity(Insertable<ProjectsTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(_startDateMeta,
+          startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta));
+    }
+    if (data.containsKey('final_date')) {
+      context.handle(_finalDateMeta,
+          finalDate.isAcceptableOrUnknown(data['final_date']!, _finalDateMeta));
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProjectsTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProjectsTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      startDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_date']),
+      finalDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}final_date']),
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+    );
+  }
+
+  @override
+  $ProjectsTableTable createAlias(String alias) {
+    return $ProjectsTableTable(attachedDatabase, alias);
+  }
+}
+
+class ProjectsTableData extends DataClass
+    implements Insertable<ProjectsTableData> {
+  final int id;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final String name;
+  final String? description;
+  final DateTime? startDate;
+  final DateTime? finalDate;
+  final String status;
+  const ProjectsTableData(
+      {required this.id,
+      required this.createdAt,
+      this.updatedAt,
+      required this.name,
+      this.description,
+      this.startDate,
+      this.finalDate,
+      required this.status});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || startDate != null) {
+      map['start_date'] = Variable<DateTime>(startDate);
+    }
+    if (!nullToAbsent || finalDate != null) {
+      map['final_date'] = Variable<DateTime>(finalDate);
+    }
+    map['status'] = Variable<String>(status);
+    return map;
+  }
+
+  ProjectsTableCompanion toCompanion(bool nullToAbsent) {
+    return ProjectsTableCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      startDate: startDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startDate),
+      finalDate: finalDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(finalDate),
+      status: Value(status),
+    );
+  }
+
+  factory ProjectsTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProjectsTableData(
+      id: serializer.fromJson<int>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      startDate: serializer.fromJson<DateTime?>(json['startDate']),
+      finalDate: serializer.fromJson<DateTime?>(json['finalDate']),
+      status: serializer.fromJson<String>(json['status']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'startDate': serializer.toJson<DateTime?>(startDate),
+      'finalDate': serializer.toJson<DateTime?>(finalDate),
+      'status': serializer.toJson<String>(status),
+    };
+  }
+
+  ProjectsTableData copyWith(
+          {int? id,
+          DateTime? createdAt,
+          Value<DateTime?> updatedAt = const Value.absent(),
+          String? name,
+          Value<String?> description = const Value.absent(),
+          Value<DateTime?> startDate = const Value.absent(),
+          Value<DateTime?> finalDate = const Value.absent(),
+          String? status}) =>
+      ProjectsTableData(
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+        name: name ?? this.name,
+        description: description.present ? description.value : this.description,
+        startDate: startDate.present ? startDate.value : this.startDate,
+        finalDate: finalDate.present ? finalDate.value : this.finalDate,
+        status: status ?? this.status,
+      );
+  ProjectsTableData copyWithCompanion(ProjectsTableCompanion data) {
+    return ProjectsTableData(
+      id: data.id.present ? data.id.value : this.id,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      name: data.name.present ? data.name.value : this.name,
+      description:
+          data.description.present ? data.description.value : this.description,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      finalDate: data.finalDate.present ? data.finalDate.value : this.finalDate,
+      status: data.status.present ? data.status.value : this.status,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProjectsTableData(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('startDate: $startDate, ')
+          ..write('finalDate: $finalDate, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, createdAt, updatedAt, name, description,
+      startDate, finalDate, status);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProjectsTableData &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.startDate == this.startDate &&
+          other.finalDate == this.finalDate &&
+          other.status == this.status);
+}
+
+class ProjectsTableCompanion extends UpdateCompanion<ProjectsTableData> {
+  final Value<int> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> updatedAt;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<DateTime?> startDate;
+  final Value<DateTime?> finalDate;
+  final Value<String> status;
+  const ProjectsTableCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.finalDate = const Value.absent(),
+    this.status = const Value.absent(),
+  });
+  ProjectsTableCompanion.insert({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required String name,
+    this.description = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.finalDate = const Value.absent(),
+    required String status,
+  })  : name = Value(name),
+        status = Value(status);
+  static Insertable<ProjectsTableData> custom({
+    Expression<int>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<DateTime>? startDate,
+    Expression<DateTime>? finalDate,
+    Expression<String>? status,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (startDate != null) 'start_date': startDate,
+      if (finalDate != null) 'final_date': finalDate,
+      if (status != null) 'status': status,
+    });
+  }
+
+  ProjectsTableCompanion copyWith(
+      {Value<int>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime?>? updatedAt,
+      Value<String>? name,
+      Value<String?>? description,
+      Value<DateTime?>? startDate,
+      Value<DateTime?>? finalDate,
+      Value<String>? status}) {
+    return ProjectsTableCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      startDate: startDate ?? this.startDate,
+      finalDate: finalDate ?? this.finalDate,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<DateTime>(startDate.value);
+    }
+    if (finalDate.present) {
+      map['final_date'] = Variable<DateTime>(finalDate.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProjectsTableCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('startDate: $startDate, ')
+          ..write('finalDate: $finalDate, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TasksTableTable extends TasksTable
+    with TableInfo<$TasksTableTable, TasksTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TasksTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -374,8 +801,17 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
       'category_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES categories_table (id)'));
+  static const VerificationMeta _projectIdMeta =
+      const VerificationMeta('projectId');
+  @override
+  late final GeneratedColumn<int> projectId = GeneratedColumn<int>(
+      'project_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES categories (id)'));
+          GeneratedColumn.constraintIsAlways('REFERENCES projects_table (id)'));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -388,15 +824,16 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
         reminder,
         status,
         prioridade,
-        categoryId
+        categoryId,
+        projectId
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'tasks';
+  static const String $name = 'tasks_table';
   @override
-  VerificationContext validateIntegrity(Insertable<Task> instance,
+  VerificationContext validateIntegrity(Insertable<TasksTableData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -457,15 +894,21 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     } else if (isInserting) {
       context.missing(_categoryIdMeta);
     }
+    if (data.containsKey('project_id')) {
+      context.handle(_projectIdMeta,
+          projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta));
+    } else if (isInserting) {
+      context.missing(_projectIdMeta);
+    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Task map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TasksTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Task(
+    return TasksTableData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       createdAt: attachedDatabase.typeMapping
@@ -488,16 +931,18 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
           .read(DriftSqlType.string, data['${effectivePrefix}prioridade'])!,
       categoryId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
+      projectId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}project_id'])!,
     );
   }
 
   @override
-  $TasksTable createAlias(String alias) {
-    return $TasksTable(attachedDatabase, alias);
+  $TasksTableTable createAlias(String alias) {
+    return $TasksTableTable(attachedDatabase, alias);
   }
 }
 
-class Task extends DataClass implements Insertable<Task> {
+class TasksTableData extends DataClass implements Insertable<TasksTableData> {
   final int id;
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -509,7 +954,8 @@ class Task extends DataClass implements Insertable<Task> {
   final String status;
   final String prioridade;
   final int categoryId;
-  const Task(
+  final int projectId;
+  const TasksTableData(
       {required this.id,
       required this.createdAt,
       this.updatedAt,
@@ -520,7 +966,8 @@ class Task extends DataClass implements Insertable<Task> {
       this.reminder,
       required this.status,
       required this.prioridade,
-      required this.categoryId});
+      required this.categoryId,
+      required this.projectId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -545,11 +992,12 @@ class Task extends DataClass implements Insertable<Task> {
     map['status'] = Variable<String>(status);
     map['prioridade'] = Variable<String>(prioridade);
     map['category_id'] = Variable<int>(categoryId);
+    map['project_id'] = Variable<int>(projectId);
     return map;
   }
 
-  TasksCompanion toCompanion(bool nullToAbsent) {
-    return TasksCompanion(
+  TasksTableCompanion toCompanion(bool nullToAbsent) {
+    return TasksTableCompanion(
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: updatedAt == null && nullToAbsent
@@ -571,13 +1019,14 @@ class Task extends DataClass implements Insertable<Task> {
       status: Value(status),
       prioridade: Value(prioridade),
       categoryId: Value(categoryId),
+      projectId: Value(projectId),
     );
   }
 
-  factory Task.fromJson(Map<String, dynamic> json,
+  factory TasksTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Task(
+    return TasksTableData(
       id: serializer.fromJson<int>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
@@ -589,6 +1038,7 @@ class Task extends DataClass implements Insertable<Task> {
       status: serializer.fromJson<String>(json['status']),
       prioridade: serializer.fromJson<String>(json['prioridade']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
+      projectId: serializer.fromJson<int>(json['projectId']),
     );
   }
   @override
@@ -606,10 +1056,11 @@ class Task extends DataClass implements Insertable<Task> {
       'status': serializer.toJson<String>(status),
       'prioridade': serializer.toJson<String>(prioridade),
       'categoryId': serializer.toJson<int>(categoryId),
+      'projectId': serializer.toJson<int>(projectId),
     };
   }
 
-  Task copyWith(
+  TasksTableData copyWith(
           {int? id,
           DateTime? createdAt,
           Value<DateTime?> updatedAt = const Value.absent(),
@@ -620,8 +1071,9 @@ class Task extends DataClass implements Insertable<Task> {
           Value<DateTime?> reminder = const Value.absent(),
           String? status,
           String? prioridade,
-          int? categoryId}) =>
-      Task(
+          int? categoryId,
+          int? projectId}) =>
+      TasksTableData(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
@@ -633,9 +1085,10 @@ class Task extends DataClass implements Insertable<Task> {
         status: status ?? this.status,
         prioridade: prioridade ?? this.prioridade,
         categoryId: categoryId ?? this.categoryId,
+        projectId: projectId ?? this.projectId,
       );
-  Task copyWithCompanion(TasksCompanion data) {
-    return Task(
+  TasksTableData copyWithCompanion(TasksTableCompanion data) {
+    return TasksTableData(
       id: data.id.present ? data.id.value : this.id,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -650,12 +1103,13 @@ class Task extends DataClass implements Insertable<Task> {
           data.prioridade.present ? data.prioridade.value : this.prioridade,
       categoryId:
           data.categoryId.present ? data.categoryId.value : this.categoryId,
+      projectId: data.projectId.present ? data.projectId.value : this.projectId,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('Task(')
+    return (StringBuffer('TasksTableData(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -666,18 +1120,19 @@ class Task extends DataClass implements Insertable<Task> {
           ..write('reminder: $reminder, ')
           ..write('status: $status, ')
           ..write('prioridade: $prioridade, ')
-          ..write('categoryId: $categoryId')
+          ..write('categoryId: $categoryId, ')
+          ..write('projectId: $projectId')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, createdAt, updatedAt, title, description,
-      dueDate, dueHour, reminder, status, prioridade, categoryId);
+      dueDate, dueHour, reminder, status, prioridade, categoryId, projectId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Task &&
+      (other is TasksTableData &&
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
@@ -688,10 +1143,11 @@ class Task extends DataClass implements Insertable<Task> {
           other.reminder == this.reminder &&
           other.status == this.status &&
           other.prioridade == this.prioridade &&
-          other.categoryId == this.categoryId);
+          other.categoryId == this.categoryId &&
+          other.projectId == this.projectId);
 }
 
-class TasksCompanion extends UpdateCompanion<Task> {
+class TasksTableCompanion extends UpdateCompanion<TasksTableData> {
   final Value<int> id;
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
@@ -703,7 +1159,8 @@ class TasksCompanion extends UpdateCompanion<Task> {
   final Value<String> status;
   final Value<String> prioridade;
   final Value<int> categoryId;
-  const TasksCompanion({
+  final Value<int> projectId;
+  const TasksTableCompanion({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -715,8 +1172,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
     this.status = const Value.absent(),
     this.prioridade = const Value.absent(),
     this.categoryId = const Value.absent(),
+    this.projectId = const Value.absent(),
   });
-  TasksCompanion.insert({
+  TasksTableCompanion.insert({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -728,11 +1186,13 @@ class TasksCompanion extends UpdateCompanion<Task> {
     required String status,
     required String prioridade,
     required int categoryId,
+    required int projectId,
   })  : title = Value(title),
         status = Value(status),
         prioridade = Value(prioridade),
-        categoryId = Value(categoryId);
-  static Insertable<Task> custom({
+        categoryId = Value(categoryId),
+        projectId = Value(projectId);
+  static Insertable<TasksTableData> custom({
     Expression<int>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -744,6 +1204,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
     Expression<String>? status,
     Expression<String>? prioridade,
     Expression<int>? categoryId,
+    Expression<int>? projectId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -757,10 +1218,11 @@ class TasksCompanion extends UpdateCompanion<Task> {
       if (status != null) 'status': status,
       if (prioridade != null) 'prioridade': prioridade,
       if (categoryId != null) 'category_id': categoryId,
+      if (projectId != null) 'project_id': projectId,
     });
   }
 
-  TasksCompanion copyWith(
+  TasksTableCompanion copyWith(
       {Value<int>? id,
       Value<DateTime>? createdAt,
       Value<DateTime?>? updatedAt,
@@ -771,8 +1233,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
       Value<DateTime?>? reminder,
       Value<String>? status,
       Value<String>? prioridade,
-      Value<int>? categoryId}) {
-    return TasksCompanion(
+      Value<int>? categoryId,
+      Value<int>? projectId}) {
+    return TasksTableCompanion(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -784,6 +1247,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
       status: status ?? this.status,
       prioridade: prioridade ?? this.prioridade,
       categoryId: categoryId ?? this.categoryId,
+      projectId: projectId ?? this.projectId,
     );
   }
 
@@ -823,12 +1287,15 @@ class TasksCompanion extends UpdateCompanion<Task> {
     if (categoryId.present) {
       map['category_id'] = Variable<int>(categoryId.value);
     }
+    if (projectId.present) {
+      map['project_id'] = Variable<int>(projectId.value);
+    }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('TasksCompanion(')
+    return (StringBuffer('TasksTableCompanion(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -839,429 +1306,8 @@ class TasksCompanion extends UpdateCompanion<Task> {
           ..write('reminder: $reminder, ')
           ..write('status: $status, ')
           ..write('prioridade: $prioridade, ')
-          ..write('categoryId: $categoryId')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $ProjectsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime,
-      requiredDuringInsert: false,
-      defaultValue: currentDateAndTime);
-  static const VerificationMeta _updatedAtMeta =
-      const VerificationMeta('updatedAt');
-  @override
-  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
-      'updated_at', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
-  @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _descriptionMeta =
-      const VerificationMeta('description');
-  @override
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _startDateMeta =
-      const VerificationMeta('startDate');
-  @override
-  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
-      'start_date', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
-  static const VerificationMeta _finalDateMeta =
-      const VerificationMeta('finalDate');
-  @override
-  late final GeneratedColumn<DateTime> finalDate = GeneratedColumn<DateTime>(
-      'final_date', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
-  static const VerificationMeta _statusMeta = const VerificationMeta('status');
-  @override
-  late final GeneratedColumn<String> status = GeneratedColumn<String>(
-      'status', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        createdAt,
-        updatedAt,
-        name,
-        description,
-        startDate,
-        finalDate,
-        status
-      ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'projects';
-  @override
-  VerificationContext validateIntegrity(Insertable<Project> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    }
-    if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    } else if (isInserting) {
-      context.missing(_nameMeta);
-    }
-    if (data.containsKey('description')) {
-      context.handle(
-          _descriptionMeta,
-          description.isAcceptableOrUnknown(
-              data['description']!, _descriptionMeta));
-    }
-    if (data.containsKey('start_date')) {
-      context.handle(_startDateMeta,
-          startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta));
-    }
-    if (data.containsKey('final_date')) {
-      context.handle(_finalDateMeta,
-          finalDate.isAcceptableOrUnknown(data['final_date']!, _finalDateMeta));
-    }
-    if (data.containsKey('status')) {
-      context.handle(_statusMeta,
-          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
-    } else if (isInserting) {
-      context.missing(_statusMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  Project map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Project(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description']),
-      startDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_date']),
-      finalDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}final_date']),
-      status: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
-    );
-  }
-
-  @override
-  $ProjectsTable createAlias(String alias) {
-    return $ProjectsTable(attachedDatabase, alias);
-  }
-}
-
-class Project extends DataClass implements Insertable<Project> {
-  final int id;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final String name;
-  final String? description;
-  final DateTime? startDate;
-  final DateTime? finalDate;
-  final String status;
-  const Project(
-      {required this.id,
-      required this.createdAt,
-      this.updatedAt,
-      required this.name,
-      this.description,
-      this.startDate,
-      this.finalDate,
-      required this.status});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['created_at'] = Variable<DateTime>(createdAt);
-    if (!nullToAbsent || updatedAt != null) {
-      map['updated_at'] = Variable<DateTime>(updatedAt);
-    }
-    map['name'] = Variable<String>(name);
-    if (!nullToAbsent || description != null) {
-      map['description'] = Variable<String>(description);
-    }
-    if (!nullToAbsent || startDate != null) {
-      map['start_date'] = Variable<DateTime>(startDate);
-    }
-    if (!nullToAbsent || finalDate != null) {
-      map['final_date'] = Variable<DateTime>(finalDate);
-    }
-    map['status'] = Variable<String>(status);
-    return map;
-  }
-
-  ProjectsCompanion toCompanion(bool nullToAbsent) {
-    return ProjectsCompanion(
-      id: Value(id),
-      createdAt: Value(createdAt),
-      updatedAt: updatedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(updatedAt),
-      name: Value(name),
-      description: description == null && nullToAbsent
-          ? const Value.absent()
-          : Value(description),
-      startDate: startDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(startDate),
-      finalDate: finalDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(finalDate),
-      status: Value(status),
-    );
-  }
-
-  factory Project.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Project(
-      id: serializer.fromJson<int>(json['id']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
-      name: serializer.fromJson<String>(json['name']),
-      description: serializer.fromJson<String?>(json['description']),
-      startDate: serializer.fromJson<DateTime?>(json['startDate']),
-      finalDate: serializer.fromJson<DateTime?>(json['finalDate']),
-      status: serializer.fromJson<String>(json['status']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
-      'name': serializer.toJson<String>(name),
-      'description': serializer.toJson<String?>(description),
-      'startDate': serializer.toJson<DateTime?>(startDate),
-      'finalDate': serializer.toJson<DateTime?>(finalDate),
-      'status': serializer.toJson<String>(status),
-    };
-  }
-
-  Project copyWith(
-          {int? id,
-          DateTime? createdAt,
-          Value<DateTime?> updatedAt = const Value.absent(),
-          String? name,
-          Value<String?> description = const Value.absent(),
-          Value<DateTime?> startDate = const Value.absent(),
-          Value<DateTime?> finalDate = const Value.absent(),
-          String? status}) =>
-      Project(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
-        name: name ?? this.name,
-        description: description.present ? description.value : this.description,
-        startDate: startDate.present ? startDate.value : this.startDate,
-        finalDate: finalDate.present ? finalDate.value : this.finalDate,
-        status: status ?? this.status,
-      );
-  Project copyWithCompanion(ProjectsCompanion data) {
-    return Project(
-      id: data.id.present ? data.id.value : this.id,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      name: data.name.present ? data.name.value : this.name,
-      description:
-          data.description.present ? data.description.value : this.description,
-      startDate: data.startDate.present ? data.startDate.value : this.startDate,
-      finalDate: data.finalDate.present ? data.finalDate.value : this.finalDate,
-      status: data.status.present ? data.status.value : this.status,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('Project(')
-          ..write('id: $id, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('name: $name, ')
-          ..write('description: $description, ')
-          ..write('startDate: $startDate, ')
-          ..write('finalDate: $finalDate, ')
-          ..write('status: $status')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, createdAt, updatedAt, name, description,
-      startDate, finalDate, status);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is Project &&
-          other.id == this.id &&
-          other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt &&
-          other.name == this.name &&
-          other.description == this.description &&
-          other.startDate == this.startDate &&
-          other.finalDate == this.finalDate &&
-          other.status == this.status);
-}
-
-class ProjectsCompanion extends UpdateCompanion<Project> {
-  final Value<int> id;
-  final Value<DateTime> createdAt;
-  final Value<DateTime?> updatedAt;
-  final Value<String> name;
-  final Value<String?> description;
-  final Value<DateTime?> startDate;
-  final Value<DateTime?> finalDate;
-  final Value<String> status;
-  const ProjectsCompanion({
-    this.id = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    this.name = const Value.absent(),
-    this.description = const Value.absent(),
-    this.startDate = const Value.absent(),
-    this.finalDate = const Value.absent(),
-    this.status = const Value.absent(),
-  });
-  ProjectsCompanion.insert({
-    this.id = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    required String name,
-    this.description = const Value.absent(),
-    this.startDate = const Value.absent(),
-    this.finalDate = const Value.absent(),
-    required String status,
-  })  : name = Value(name),
-        status = Value(status);
-  static Insertable<Project> custom({
-    Expression<int>? id,
-    Expression<DateTime>? createdAt,
-    Expression<DateTime>? updatedAt,
-    Expression<String>? name,
-    Expression<String>? description,
-    Expression<DateTime>? startDate,
-    Expression<DateTime>? finalDate,
-    Expression<String>? status,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (createdAt != null) 'created_at': createdAt,
-      if (updatedAt != null) 'updated_at': updatedAt,
-      if (name != null) 'name': name,
-      if (description != null) 'description': description,
-      if (startDate != null) 'start_date': startDate,
-      if (finalDate != null) 'final_date': finalDate,
-      if (status != null) 'status': status,
-    });
-  }
-
-  ProjectsCompanion copyWith(
-      {Value<int>? id,
-      Value<DateTime>? createdAt,
-      Value<DateTime?>? updatedAt,
-      Value<String>? name,
-      Value<String?>? description,
-      Value<DateTime?>? startDate,
-      Value<DateTime?>? finalDate,
-      Value<String>? status}) {
-    return ProjectsCompanion(
-      id: id ?? this.id,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      name: name ?? this.name,
-      description: description ?? this.description,
-      startDate: startDate ?? this.startDate,
-      finalDate: finalDate ?? this.finalDate,
-      status: status ?? this.status,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
-    if (description.present) {
-      map['description'] = Variable<String>(description.value);
-    }
-    if (startDate.present) {
-      map['start_date'] = Variable<DateTime>(startDate.value);
-    }
-    if (finalDate.present) {
-      map['final_date'] = Variable<DateTime>(finalDate.value);
-    }
-    if (status.present) {
-      map['status'] = Variable<String>(status.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('ProjectsCompanion(')
-          ..write('id: $id, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('name: $name, ')
-          ..write('description: $description, ')
-          ..write('startDate: $startDate, ')
-          ..write('finalDate: $finalDate, ')
-          ..write('status: $status')
+          ..write('categoryId: $categoryId, ')
+          ..write('projectId: $projectId')
           ..write(')'))
         .toString();
   }
@@ -1270,25 +1316,31 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
-  late final $CategoriesTable categories = $CategoriesTable(this);
-  late final $TasksTable tasks = $TasksTable(this);
-  late final $ProjectsTable projects = $ProjectsTable(this);
+  late final $CategoriesTableTable categoriesTable =
+      $CategoriesTableTable(this);
+  late final $ProjectsTableTable projectsTable = $ProjectsTableTable(this);
+  late final $TasksTableTable tasksTable = $TasksTableTable(this);
+  late final TaskDao taskDao = TaskDao(this as AppDatabase);
+  late final CategoryDao categoryDao = CategoryDao(this as AppDatabase);
+  late final ProjectDao projectDao = ProjectDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [categories, tasks, projects];
+      [categoriesTable, projectsTable, tasksTable];
 }
 
-typedef $$CategoriesTableCreateCompanionBuilder = CategoriesCompanion Function({
+typedef $$CategoriesTableTableCreateCompanionBuilder = CategoriesTableCompanion
+    Function({
   Value<int> id,
   Value<DateTime> createdAt,
   Value<DateTime?> updatedAt,
   required String name,
   required String color,
 });
-typedef $$CategoriesTableUpdateCompanionBuilder = CategoriesCompanion Function({
+typedef $$CategoriesTableTableUpdateCompanionBuilder = CategoriesTableCompanion
+    Function({
   Value<int> id,
   Value<DateTime> createdAt,
   Value<DateTime?> updatedAt,
@@ -1296,29 +1348,30 @@ typedef $$CategoriesTableUpdateCompanionBuilder = CategoriesCompanion Function({
   Value<String> color,
 });
 
-final class $$CategoriesTableReferences
-    extends BaseReferences<_$AppDatabase, $CategoriesTable, Category> {
-  $$CategoriesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$CategoriesTableTableReferences extends BaseReferences<
+    _$AppDatabase, $CategoriesTableTable, CategoriesTableData> {
+  $$CategoriesTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$TasksTable, List<Task>> _tasksRefsTable(
-          _$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(db.tasks,
-          aliasName:
-              $_aliasNameGenerator(db.categories.id, db.tasks.categoryId));
+  static MultiTypedResultKey<$TasksTableTable, List<TasksTableData>>
+      _tasksTableRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.tasksTable,
+              aliasName: $_aliasNameGenerator(
+                  db.categoriesTable.id, db.tasksTable.categoryId));
 
-  $$TasksTableProcessedTableManager get tasksRefs {
-    final manager = $$TasksTableTableManager($_db, $_db.tasks)
+  $$TasksTableTableProcessedTableManager get tasksTableRefs {
+    final manager = $$TasksTableTableTableManager($_db, $_db.tasksTable)
         .filter((f) => f.categoryId.id.sqlEquals($_itemColumn<int>('id')!));
 
-    final cache = $_typedResult.readTableOrNull(_tasksRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(_tasksTableRefsTable($_db));
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
 }
 
-class $$CategoriesTableFilterComposer
-    extends Composer<_$AppDatabase, $CategoriesTable> {
-  $$CategoriesTableFilterComposer({
+class $$CategoriesTableTableFilterComposer
+    extends Composer<_$AppDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1340,19 +1393,19 @@ class $$CategoriesTableFilterComposer
   ColumnFilters<String> get color => $composableBuilder(
       column: $table.color, builder: (column) => ColumnFilters(column));
 
-  Expression<bool> tasksRefs(
-      Expression<bool> Function($$TasksTableFilterComposer f) f) {
-    final $$TasksTableFilterComposer composer = $composerBuilder(
+  Expression<bool> tasksTableRefs(
+      Expression<bool> Function($$TasksTableTableFilterComposer f) f) {
+    final $$TasksTableTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.id,
-        referencedTable: $db.tasks,
+        referencedTable: $db.tasksTable,
         getReferencedColumn: (t) => t.categoryId,
         builder: (joinBuilder,
                 {$addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer}) =>
-            $$TasksTableFilterComposer(
+            $$TasksTableTableFilterComposer(
               $db: $db,
-              $table: $db.tasks,
+              $table: $db.tasksTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -1362,9 +1415,9 @@ class $$CategoriesTableFilterComposer
   }
 }
 
-class $$CategoriesTableOrderingComposer
-    extends Composer<_$AppDatabase, $CategoriesTable> {
-  $$CategoriesTableOrderingComposer({
+class $$CategoriesTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1387,9 +1440,9 @@ class $$CategoriesTableOrderingComposer
       column: $table.color, builder: (column) => ColumnOrderings(column));
 }
 
-class $$CategoriesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $CategoriesTable> {
-  $$CategoriesTableAnnotationComposer({
+class $$CategoriesTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1411,19 +1464,19 @@ class $$CategoriesTableAnnotationComposer
   GeneratedColumn<String> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
 
-  Expression<T> tasksRefs<T extends Object>(
-      Expression<T> Function($$TasksTableAnnotationComposer a) f) {
-    final $$TasksTableAnnotationComposer composer = $composerBuilder(
+  Expression<T> tasksTableRefs<T extends Object>(
+      Expression<T> Function($$TasksTableTableAnnotationComposer a) f) {
+    final $$TasksTableTableAnnotationComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.id,
-        referencedTable: $db.tasks,
+        referencedTable: $db.tasksTable,
         getReferencedColumn: (t) => t.categoryId,
         builder: (joinBuilder,
                 {$addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer}) =>
-            $$TasksTableAnnotationComposer(
+            $$TasksTableTableAnnotationComposer(
               $db: $db,
-              $table: $db.tasks,
+              $table: $db.tasksTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -1433,28 +1486,29 @@ class $$CategoriesTableAnnotationComposer
   }
 }
 
-class $$CategoriesTableTableManager extends RootTableManager<
+class $$CategoriesTableTableTableManager extends RootTableManager<
     _$AppDatabase,
-    $CategoriesTable,
-    Category,
-    $$CategoriesTableFilterComposer,
-    $$CategoriesTableOrderingComposer,
-    $$CategoriesTableAnnotationComposer,
-    $$CategoriesTableCreateCompanionBuilder,
-    $$CategoriesTableUpdateCompanionBuilder,
-    (Category, $$CategoriesTableReferences),
-    Category,
-    PrefetchHooks Function({bool tasksRefs})> {
-  $$CategoriesTableTableManager(_$AppDatabase db, $CategoriesTable table)
+    $CategoriesTableTable,
+    CategoriesTableData,
+    $$CategoriesTableTableFilterComposer,
+    $$CategoriesTableTableOrderingComposer,
+    $$CategoriesTableTableAnnotationComposer,
+    $$CategoriesTableTableCreateCompanionBuilder,
+    $$CategoriesTableTableUpdateCompanionBuilder,
+    (CategoriesTableData, $$CategoriesTableTableReferences),
+    CategoriesTableData,
+    PrefetchHooks Function({bool tasksTableRefs})> {
+  $$CategoriesTableTableTableManager(
+      _$AppDatabase db, $CategoriesTableTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$CategoriesTableFilterComposer($db: db, $table: table),
+              $$CategoriesTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$CategoriesTableOrderingComposer($db: db, $table: table),
+              $$CategoriesTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$CategoriesTableAnnotationComposer($db: db, $table: table),
+              $$CategoriesTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
@@ -1462,7 +1516,7 @@ class $$CategoriesTableTableManager extends RootTableManager<
             Value<String> name = const Value.absent(),
             Value<String> color = const Value.absent(),
           }) =>
-              CategoriesCompanion(
+              CategoriesTableCompanion(
             id: id,
             createdAt: createdAt,
             updatedAt: updatedAt,
@@ -1476,7 +1530,7 @@ class $$CategoriesTableTableManager extends RootTableManager<
             required String name,
             required String color,
           }) =>
-              CategoriesCompanion.insert(
+              CategoriesTableCompanion.insert(
             id: id,
             createdAt: createdAt,
             updatedAt: updatedAt,
@@ -1486,24 +1540,25 @@ class $$CategoriesTableTableManager extends RootTableManager<
           withReferenceMapper: (p0) => p0
               .map((e) => (
                     e.readTable(table),
-                    $$CategoriesTableReferences(db, table, e)
+                    $$CategoriesTableTableReferences(db, table, e)
                   ))
               .toList(),
-          prefetchHooksCallback: ({tasksRefs = false}) {
+          prefetchHooksCallback: ({tasksTableRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (tasksRefs) db.tasks],
+              explicitlyWatchedTables: [if (tasksTableRefs) db.tasksTable],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (tasksRefs)
-                    await $_getPrefetchedData<Category, $CategoriesTable, Task>(
+                  if (tasksTableRefs)
+                    await $_getPrefetchedData<CategoriesTableData,
+                            $CategoriesTableTable, TasksTableData>(
                         currentTable: table,
-                        referencedTable:
-                            $$CategoriesTableReferences._tasksRefsTable(db),
+                        referencedTable: $$CategoriesTableTableReferences
+                            ._tasksTableRefsTable(db),
                         managerFromTypedResult: (p0) =>
-                            $$CategoriesTableReferences(db, table, p0)
-                                .tasksRefs,
+                            $$CategoriesTableTableReferences(db, table, p0)
+                                .tasksTableRefs,
                         referencedItemsForCurrentItem:
                             (item, referencedItems) => referencedItems
                                 .where((e) => e.categoryId == item.id),
@@ -1515,19 +1570,314 @@ class $$CategoriesTableTableManager extends RootTableManager<
         ));
 }
 
-typedef $$CategoriesTableProcessedTableManager = ProcessedTableManager<
+typedef $$CategoriesTableTableProcessedTableManager = ProcessedTableManager<
     _$AppDatabase,
-    $CategoriesTable,
-    Category,
-    $$CategoriesTableFilterComposer,
-    $$CategoriesTableOrderingComposer,
-    $$CategoriesTableAnnotationComposer,
-    $$CategoriesTableCreateCompanionBuilder,
-    $$CategoriesTableUpdateCompanionBuilder,
-    (Category, $$CategoriesTableReferences),
-    Category,
-    PrefetchHooks Function({bool tasksRefs})>;
-typedef $$TasksTableCreateCompanionBuilder = TasksCompanion Function({
+    $CategoriesTableTable,
+    CategoriesTableData,
+    $$CategoriesTableTableFilterComposer,
+    $$CategoriesTableTableOrderingComposer,
+    $$CategoriesTableTableAnnotationComposer,
+    $$CategoriesTableTableCreateCompanionBuilder,
+    $$CategoriesTableTableUpdateCompanionBuilder,
+    (CategoriesTableData, $$CategoriesTableTableReferences),
+    CategoriesTableData,
+    PrefetchHooks Function({bool tasksTableRefs})>;
+typedef $$ProjectsTableTableCreateCompanionBuilder = ProjectsTableCompanion
+    Function({
+  Value<int> id,
+  Value<DateTime> createdAt,
+  Value<DateTime?> updatedAt,
+  required String name,
+  Value<String?> description,
+  Value<DateTime?> startDate,
+  Value<DateTime?> finalDate,
+  required String status,
+});
+typedef $$ProjectsTableTableUpdateCompanionBuilder = ProjectsTableCompanion
+    Function({
+  Value<int> id,
+  Value<DateTime> createdAt,
+  Value<DateTime?> updatedAt,
+  Value<String> name,
+  Value<String?> description,
+  Value<DateTime?> startDate,
+  Value<DateTime?> finalDate,
+  Value<String> status,
+});
+
+final class $$ProjectsTableTableReferences extends BaseReferences<_$AppDatabase,
+    $ProjectsTableTable, ProjectsTableData> {
+  $$ProjectsTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$TasksTableTable, List<TasksTableData>>
+      _tasksTableRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.tasksTable,
+              aliasName: $_aliasNameGenerator(
+                  db.projectsTable.id, db.tasksTable.projectId));
+
+  $$TasksTableTableProcessedTableManager get tasksTableRefs {
+    final manager = $$TasksTableTableTableManager($_db, $_db.tasksTable)
+        .filter((f) => f.projectId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_tasksTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$ProjectsTableTableFilterComposer
+    extends Composer<_$AppDatabase, $ProjectsTableTable> {
+  $$ProjectsTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get startDate => $composableBuilder(
+      column: $table.startDate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get finalDate => $composableBuilder(
+      column: $table.finalDate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> tasksTableRefs(
+      Expression<bool> Function($$TasksTableTableFilterComposer f) f) {
+    final $$TasksTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.tasksTable,
+        getReferencedColumn: (t) => t.projectId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$TasksTableTableFilterComposer(
+              $db: $db,
+              $table: $db.tasksTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$ProjectsTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProjectsTableTable> {
+  $$ProjectsTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get startDate => $composableBuilder(
+      column: $table.startDate, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get finalDate => $composableBuilder(
+      column: $table.finalDate, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
+}
+
+class $$ProjectsTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProjectsTableTable> {
+  $$ProjectsTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get finalDate =>
+      $composableBuilder(column: $table.finalDate, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  Expression<T> tasksTableRefs<T extends Object>(
+      Expression<T> Function($$TasksTableTableAnnotationComposer a) f) {
+    final $$TasksTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.tasksTable,
+        getReferencedColumn: (t) => t.projectId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$TasksTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.tasksTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$ProjectsTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ProjectsTableTable,
+    ProjectsTableData,
+    $$ProjectsTableTableFilterComposer,
+    $$ProjectsTableTableOrderingComposer,
+    $$ProjectsTableTableAnnotationComposer,
+    $$ProjectsTableTableCreateCompanionBuilder,
+    $$ProjectsTableTableUpdateCompanionBuilder,
+    (ProjectsTableData, $$ProjectsTableTableReferences),
+    ProjectsTableData,
+    PrefetchHooks Function({bool tasksTableRefs})> {
+  $$ProjectsTableTableTableManager(_$AppDatabase db, $ProjectsTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProjectsTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProjectsTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProjectsTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<DateTime?> startDate = const Value.absent(),
+            Value<DateTime?> finalDate = const Value.absent(),
+            Value<String> status = const Value.absent(),
+          }) =>
+              ProjectsTableCompanion(
+            id: id,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            name: name,
+            description: description,
+            startDate: startDate,
+            finalDate: finalDate,
+            status: status,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
+            required String name,
+            Value<String?> description = const Value.absent(),
+            Value<DateTime?> startDate = const Value.absent(),
+            Value<DateTime?> finalDate = const Value.absent(),
+            required String status,
+          }) =>
+              ProjectsTableCompanion.insert(
+            id: id,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            name: name,
+            description: description,
+            startDate: startDate,
+            finalDate: finalDate,
+            status: status,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$ProjectsTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({tasksTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (tasksTableRefs) db.tasksTable],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (tasksTableRefs)
+                    await $_getPrefetchedData<ProjectsTableData,
+                            $ProjectsTableTable, TasksTableData>(
+                        currentTable: table,
+                        referencedTable: $$ProjectsTableTableReferences
+                            ._tasksTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$ProjectsTableTableReferences(db, table, p0)
+                                .tasksTableRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.projectId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$ProjectsTableTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $ProjectsTableTable,
+    ProjectsTableData,
+    $$ProjectsTableTableFilterComposer,
+    $$ProjectsTableTableOrderingComposer,
+    $$ProjectsTableTableAnnotationComposer,
+    $$ProjectsTableTableCreateCompanionBuilder,
+    $$ProjectsTableTableUpdateCompanionBuilder,
+    (ProjectsTableData, $$ProjectsTableTableReferences),
+    ProjectsTableData,
+    PrefetchHooks Function({bool tasksTableRefs})>;
+typedef $$TasksTableTableCreateCompanionBuilder = TasksTableCompanion Function({
   Value<int> id,
   Value<DateTime> createdAt,
   Value<DateTime?> updatedAt,
@@ -1539,8 +1889,9 @@ typedef $$TasksTableCreateCompanionBuilder = TasksCompanion Function({
   required String status,
   required String prioridade,
   required int categoryId,
+  required int projectId,
 });
-typedef $$TasksTableUpdateCompanionBuilder = TasksCompanion Function({
+typedef $$TasksTableTableUpdateCompanionBuilder = TasksTableCompanion Function({
   Value<int> id,
   Value<DateTime> createdAt,
   Value<DateTime?> updatedAt,
@@ -1552,29 +1903,48 @@ typedef $$TasksTableUpdateCompanionBuilder = TasksCompanion Function({
   Value<String> status,
   Value<String> prioridade,
   Value<int> categoryId,
+  Value<int> projectId,
 });
 
-final class $$TasksTableReferences
-    extends BaseReferences<_$AppDatabase, $TasksTable, Task> {
-  $$TasksTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$TasksTableTableReferences
+    extends BaseReferences<_$AppDatabase, $TasksTableTable, TasksTableData> {
+  $$TasksTableTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $CategoriesTable _categoryIdTable(_$AppDatabase db) => db.categories
-      .createAlias($_aliasNameGenerator(db.tasks.categoryId, db.categories.id));
+  static $CategoriesTableTable _categoryIdTable(_$AppDatabase db) =>
+      db.categoriesTable.createAlias($_aliasNameGenerator(
+          db.tasksTable.categoryId, db.categoriesTable.id));
 
-  $$CategoriesTableProcessedTableManager get categoryId {
+  $$CategoriesTableTableProcessedTableManager get categoryId {
     final $_column = $_itemColumn<int>('category_id')!;
 
-    final manager = $$CategoriesTableTableManager($_db, $_db.categories)
-        .filter((f) => f.id.sqlEquals($_column));
+    final manager =
+        $$CategoriesTableTableTableManager($_db, $_db.categoriesTable)
+            .filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_categoryIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $ProjectsTableTable _projectIdTable(_$AppDatabase db) =>
+      db.projectsTable.createAlias(
+          $_aliasNameGenerator(db.tasksTable.projectId, db.projectsTable.id));
+
+  $$ProjectsTableTableProcessedTableManager get projectId {
+    final $_column = $_itemColumn<int>('project_id')!;
+
+    final manager = $$ProjectsTableTableTableManager($_db, $_db.projectsTable)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_projectIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: [item]));
   }
 }
 
-class $$TasksTableFilterComposer extends Composer<_$AppDatabase, $TasksTable> {
-  $$TasksTableFilterComposer({
+class $$TasksTableTableFilterComposer
+    extends Composer<_$AppDatabase, $TasksTableTable> {
+  $$TasksTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1611,18 +1981,38 @@ class $$TasksTableFilterComposer extends Composer<_$AppDatabase, $TasksTable> {
   ColumnFilters<String> get prioridade => $composableBuilder(
       column: $table.prioridade, builder: (column) => ColumnFilters(column));
 
-  $$CategoriesTableFilterComposer get categoryId {
-    final $$CategoriesTableFilterComposer composer = $composerBuilder(
+  $$CategoriesTableTableFilterComposer get categoryId {
+    final $$CategoriesTableTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.categoryId,
-        referencedTable: $db.categories,
+        referencedTable: $db.categoriesTable,
         getReferencedColumn: (t) => t.id,
         builder: (joinBuilder,
                 {$addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer}) =>
-            $$CategoriesTableFilterComposer(
+            $$CategoriesTableTableFilterComposer(
               $db: $db,
-              $table: $db.categories,
+              $table: $db.categoriesTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$ProjectsTableTableFilterComposer get projectId {
+    final $$ProjectsTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.projectId,
+        referencedTable: $db.projectsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProjectsTableTableFilterComposer(
+              $db: $db,
+              $table: $db.projectsTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -1632,9 +2022,9 @@ class $$TasksTableFilterComposer extends Composer<_$AppDatabase, $TasksTable> {
   }
 }
 
-class $$TasksTableOrderingComposer
-    extends Composer<_$AppDatabase, $TasksTable> {
-  $$TasksTableOrderingComposer({
+class $$TasksTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $TasksTableTable> {
+  $$TasksTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1671,18 +2061,38 @@ class $$TasksTableOrderingComposer
   ColumnOrderings<String> get prioridade => $composableBuilder(
       column: $table.prioridade, builder: (column) => ColumnOrderings(column));
 
-  $$CategoriesTableOrderingComposer get categoryId {
-    final $$CategoriesTableOrderingComposer composer = $composerBuilder(
+  $$CategoriesTableTableOrderingComposer get categoryId {
+    final $$CategoriesTableTableOrderingComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.categoryId,
-        referencedTable: $db.categories,
+        referencedTable: $db.categoriesTable,
         getReferencedColumn: (t) => t.id,
         builder: (joinBuilder,
                 {$addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer}) =>
-            $$CategoriesTableOrderingComposer(
+            $$CategoriesTableTableOrderingComposer(
               $db: $db,
-              $table: $db.categories,
+              $table: $db.categoriesTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$ProjectsTableTableOrderingComposer get projectId {
+    final $$ProjectsTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.projectId,
+        referencedTable: $db.projectsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProjectsTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.projectsTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -1692,9 +2102,9 @@ class $$TasksTableOrderingComposer
   }
 }
 
-class $$TasksTableAnnotationComposer
-    extends Composer<_$AppDatabase, $TasksTable> {
-  $$TasksTableAnnotationComposer({
+class $$TasksTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TasksTableTable> {
+  $$TasksTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1731,18 +2141,38 @@ class $$TasksTableAnnotationComposer
   GeneratedColumn<String> get prioridade => $composableBuilder(
       column: $table.prioridade, builder: (column) => column);
 
-  $$CategoriesTableAnnotationComposer get categoryId {
-    final $$CategoriesTableAnnotationComposer composer = $composerBuilder(
+  $$CategoriesTableTableAnnotationComposer get categoryId {
+    final $$CategoriesTableTableAnnotationComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.categoryId,
-        referencedTable: $db.categories,
+        referencedTable: $db.categoriesTable,
         getReferencedColumn: (t) => t.id,
         builder: (joinBuilder,
                 {$addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer}) =>
-            $$CategoriesTableAnnotationComposer(
+            $$CategoriesTableTableAnnotationComposer(
               $db: $db,
-              $table: $db.categories,
+              $table: $db.categoriesTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$ProjectsTableTableAnnotationComposer get projectId {
+    final $$ProjectsTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.projectId,
+        referencedTable: $db.projectsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProjectsTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.projectsTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -1752,28 +2182,28 @@ class $$TasksTableAnnotationComposer
   }
 }
 
-class $$TasksTableTableManager extends RootTableManager<
+class $$TasksTableTableTableManager extends RootTableManager<
     _$AppDatabase,
-    $TasksTable,
-    Task,
-    $$TasksTableFilterComposer,
-    $$TasksTableOrderingComposer,
-    $$TasksTableAnnotationComposer,
-    $$TasksTableCreateCompanionBuilder,
-    $$TasksTableUpdateCompanionBuilder,
-    (Task, $$TasksTableReferences),
-    Task,
-    PrefetchHooks Function({bool categoryId})> {
-  $$TasksTableTableManager(_$AppDatabase db, $TasksTable table)
+    $TasksTableTable,
+    TasksTableData,
+    $$TasksTableTableFilterComposer,
+    $$TasksTableTableOrderingComposer,
+    $$TasksTableTableAnnotationComposer,
+    $$TasksTableTableCreateCompanionBuilder,
+    $$TasksTableTableUpdateCompanionBuilder,
+    (TasksTableData, $$TasksTableTableReferences),
+    TasksTableData,
+    PrefetchHooks Function({bool categoryId, bool projectId})> {
+  $$TasksTableTableTableManager(_$AppDatabase db, $TasksTableTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$TasksTableFilterComposer($db: db, $table: table),
+              $$TasksTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$TasksTableOrderingComposer($db: db, $table: table),
+              $$TasksTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$TasksTableAnnotationComposer($db: db, $table: table),
+              $$TasksTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
@@ -1786,8 +2216,9 @@ class $$TasksTableTableManager extends RootTableManager<
             Value<String> status = const Value.absent(),
             Value<String> prioridade = const Value.absent(),
             Value<int> categoryId = const Value.absent(),
+            Value<int> projectId = const Value.absent(),
           }) =>
-              TasksCompanion(
+              TasksTableCompanion(
             id: id,
             createdAt: createdAt,
             updatedAt: updatedAt,
@@ -1799,6 +2230,7 @@ class $$TasksTableTableManager extends RootTableManager<
             status: status,
             prioridade: prioridade,
             categoryId: categoryId,
+            projectId: projectId,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -1812,8 +2244,9 @@ class $$TasksTableTableManager extends RootTableManager<
             required String status,
             required String prioridade,
             required int categoryId,
+            required int projectId,
           }) =>
-              TasksCompanion.insert(
+              TasksTableCompanion.insert(
             id: id,
             createdAt: createdAt,
             updatedAt: updatedAt,
@@ -1825,12 +2258,15 @@ class $$TasksTableTableManager extends RootTableManager<
             status: status,
             prioridade: prioridade,
             categoryId: categoryId,
+            projectId: projectId,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) =>
-                  (e.readTable(table), $$TasksTableReferences(db, table, e)))
+              .map((e) => (
+                    e.readTable(table),
+                    $$TasksTableTableReferences(db, table, e)
+                  ))
               .toList(),
-          prefetchHooksCallback: ({categoryId = false}) {
+          prefetchHooksCallback: ({categoryId = false, projectId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -1852,9 +2288,19 @@ class $$TasksTableTableManager extends RootTableManager<
                     currentTable: table,
                     currentColumn: table.categoryId,
                     referencedTable:
-                        $$TasksTableReferences._categoryIdTable(db),
+                        $$TasksTableTableReferences._categoryIdTable(db),
                     referencedColumn:
-                        $$TasksTableReferences._categoryIdTable(db).id,
+                        $$TasksTableTableReferences._categoryIdTable(db).id,
+                  ) as T;
+                }
+                if (projectId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.projectId,
+                    referencedTable:
+                        $$TasksTableTableReferences._projectIdTable(db),
+                    referencedColumn:
+                        $$TasksTableTableReferences._projectIdTable(db).id,
                   ) as T;
                 }
 
@@ -1868,232 +2314,28 @@ class $$TasksTableTableManager extends RootTableManager<
         ));
 }
 
-typedef $$TasksTableProcessedTableManager = ProcessedTableManager<
+typedef $$TasksTableTableProcessedTableManager = ProcessedTableManager<
     _$AppDatabase,
-    $TasksTable,
-    Task,
-    $$TasksTableFilterComposer,
-    $$TasksTableOrderingComposer,
-    $$TasksTableAnnotationComposer,
-    $$TasksTableCreateCompanionBuilder,
-    $$TasksTableUpdateCompanionBuilder,
-    (Task, $$TasksTableReferences),
-    Task,
-    PrefetchHooks Function({bool categoryId})>;
-typedef $$ProjectsTableCreateCompanionBuilder = ProjectsCompanion Function({
-  Value<int> id,
-  Value<DateTime> createdAt,
-  Value<DateTime?> updatedAt,
-  required String name,
-  Value<String?> description,
-  Value<DateTime?> startDate,
-  Value<DateTime?> finalDate,
-  required String status,
-});
-typedef $$ProjectsTableUpdateCompanionBuilder = ProjectsCompanion Function({
-  Value<int> id,
-  Value<DateTime> createdAt,
-  Value<DateTime?> updatedAt,
-  Value<String> name,
-  Value<String?> description,
-  Value<DateTime?> startDate,
-  Value<DateTime?> finalDate,
-  Value<String> status,
-});
-
-class $$ProjectsTableFilterComposer
-    extends Composer<_$AppDatabase, $ProjectsTable> {
-  $$ProjectsTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
-      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get description => $composableBuilder(
-      column: $table.description, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get startDate => $composableBuilder(
-      column: $table.startDate, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get finalDate => $composableBuilder(
-      column: $table.finalDate, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get status => $composableBuilder(
-      column: $table.status, builder: (column) => ColumnFilters(column));
-}
-
-class $$ProjectsTableOrderingComposer
-    extends Composer<_$AppDatabase, $ProjectsTable> {
-  $$ProjectsTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
-      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get description => $composableBuilder(
-      column: $table.description, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get startDate => $composableBuilder(
-      column: $table.startDate, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get finalDate => $composableBuilder(
-      column: $table.finalDate, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get status => $composableBuilder(
-      column: $table.status, builder: (column) => ColumnOrderings(column));
-}
-
-class $$ProjectsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $ProjectsTable> {
-  $$ProjectsTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
-
-  GeneratedColumn<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => column);
-
-  GeneratedColumn<String> get description => $composableBuilder(
-      column: $table.description, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get startDate =>
-      $composableBuilder(column: $table.startDate, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get finalDate =>
-      $composableBuilder(column: $table.finalDate, builder: (column) => column);
-
-  GeneratedColumn<String> get status =>
-      $composableBuilder(column: $table.status, builder: (column) => column);
-}
-
-class $$ProjectsTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $ProjectsTable,
-    Project,
-    $$ProjectsTableFilterComposer,
-    $$ProjectsTableOrderingComposer,
-    $$ProjectsTableAnnotationComposer,
-    $$ProjectsTableCreateCompanionBuilder,
-    $$ProjectsTableUpdateCompanionBuilder,
-    (Project, BaseReferences<_$AppDatabase, $ProjectsTable, Project>),
-    Project,
-    PrefetchHooks Function()> {
-  $$ProjectsTableTableManager(_$AppDatabase db, $ProjectsTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$ProjectsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$ProjectsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$ProjectsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<DateTime?> updatedAt = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-            Value<DateTime?> startDate = const Value.absent(),
-            Value<DateTime?> finalDate = const Value.absent(),
-            Value<String> status = const Value.absent(),
-          }) =>
-              ProjectsCompanion(
-            id: id,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            name: name,
-            description: description,
-            startDate: startDate,
-            finalDate: finalDate,
-            status: status,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<DateTime?> updatedAt = const Value.absent(),
-            required String name,
-            Value<String?> description = const Value.absent(),
-            Value<DateTime?> startDate = const Value.absent(),
-            Value<DateTime?> finalDate = const Value.absent(),
-            required String status,
-          }) =>
-              ProjectsCompanion.insert(
-            id: id,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            name: name,
-            description: description,
-            startDate: startDate,
-            finalDate: finalDate,
-            status: status,
-          ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
-          prefetchHooksCallback: null,
-        ));
-}
-
-typedef $$ProjectsTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $ProjectsTable,
-    Project,
-    $$ProjectsTableFilterComposer,
-    $$ProjectsTableOrderingComposer,
-    $$ProjectsTableAnnotationComposer,
-    $$ProjectsTableCreateCompanionBuilder,
-    $$ProjectsTableUpdateCompanionBuilder,
-    (Project, BaseReferences<_$AppDatabase, $ProjectsTable, Project>),
-    Project,
-    PrefetchHooks Function()>;
+    $TasksTableTable,
+    TasksTableData,
+    $$TasksTableTableFilterComposer,
+    $$TasksTableTableOrderingComposer,
+    $$TasksTableTableAnnotationComposer,
+    $$TasksTableTableCreateCompanionBuilder,
+    $$TasksTableTableUpdateCompanionBuilder,
+    (TasksTableData, $$TasksTableTableReferences),
+    TasksTableData,
+    PrefetchHooks Function({bool categoryId, bool projectId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$CategoriesTableTableManager get categories =>
-      $$CategoriesTableTableManager(_db, _db.categories);
-  $$TasksTableTableManager get tasks =>
-      $$TasksTableTableManager(_db, _db.tasks);
-  $$ProjectsTableTableManager get projects =>
-      $$ProjectsTableTableManager(_db, _db.projects);
+  $$CategoriesTableTableTableManager get categoriesTable =>
+      $$CategoriesTableTableTableManager(_db, _db.categoriesTable);
+  $$ProjectsTableTableTableManager get projectsTable =>
+      $$ProjectsTableTableTableManager(_db, _db.projectsTable);
+  $$TasksTableTableTableManager get tasksTable =>
+      $$TasksTableTableTableManager(_db, _db.tasksTable);
 }
 
 // **************************************************************************
