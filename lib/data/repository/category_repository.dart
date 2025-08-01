@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:to_do_list/data/app_database.dart';
-import 'package:to_do_list/data/daos/category_dao.dart';
+import 'package:to_do_list/data/db/app_database.dart';
+import 'package:to_do_list/data/db/daos/category_dao.dart';
 
 part 'category_repository.g.dart';
 

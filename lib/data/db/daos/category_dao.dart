@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:to_do_list/data/app_database.dart';
-import 'package:to_do_list/data/tables/category_table.dart';
+import 'package:to_do_list/data/db/app_database.dart';
+import 'package:to_do_list/data/db/tables/category_table.dart';
 
 part 'category_dao.g.dart';
 

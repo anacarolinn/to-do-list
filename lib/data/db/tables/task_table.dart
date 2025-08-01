@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:to_do_list/data/tables/category_table.dart';
-import 'package:to_do_list/data/tables/project_table.dart';
+import 'package:to_do_list/data/db/tables/category_table.dart';
+import 'package:to_do_list/data/db/tables/project_table.dart';
 
 class TasksTable extends Table {
   IntColumn get id => integer().autoIncrement()();
