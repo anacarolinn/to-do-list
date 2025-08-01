@@ -1,8 +1,16 @@
 import 'package:drift/drift.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:to_do_list/data/app_database.dart';
 import 'package:to_do_list/data/tables/category_table.dart';
 
 part 'category_dao.g.dart';
+
+@riverpod
+CategoryDao categoryDao(Ref ref) {
+  final db = ref.watch(appDatabaseProvider);
+  return CategoryDao(db);
+}
 
 @DriftAccessor(tables: [CategoriesTable])
 class CategoryDao extends DatabaseAccessor<AppDatabase>

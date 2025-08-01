@@ -1,8 +1,16 @@
 import 'package:drift/drift.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:to_do_list/data/app_database.dart';
 import 'package:to_do_list/data/tables/project_table.dart';
 
 part 'project_dao.g.dart';
+
+@riverpod
+ProjectDao projectDao(Ref ref) {
+  final db = ref.watch(appDatabaseProvider);
+  return ProjectDao(db);
+}
 
 @DriftAccessor(tables: [ProjectsTable])
 class ProjectDao extends DatabaseAccessor<AppDatabase> with _$ProjectDaoMixin {

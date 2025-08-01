@@ -1,8 +1,16 @@
 import 'package:drift/drift.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:to_do_list/data/app_database.dart';
 import 'package:to_do_list/data/tables/task_table.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 part 'task_dao.g.dart';
+
+@riverpod
+TaskDao taskDao(Ref ref) {
+  final db = ref.watch(appDatabaseProvider);
+  return TaskDao(db);
+}
 
 @DriftAccessor(tables: [TasksTable])
 class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
