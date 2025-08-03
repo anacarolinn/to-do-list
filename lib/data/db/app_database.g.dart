@@ -792,24 +792,24 @@ class $TasksTableTable extends TasksTable
       const VerificationMeta('prioridade');
   @override
   late final GeneratedColumn<String> prioridade = GeneratedColumn<String>(
-      'prioridade', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'prioridade', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _categoryIdMeta =
       const VerificationMeta('categoryId');
   @override
   late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
-      'category_id', aliasedName, false,
+      'category_id', aliasedName, true,
       type: DriftSqlType.int,
-      requiredDuringInsert: true,
+      requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'REFERENCES categories_table (id)'));
   static const VerificationMeta _projectIdMeta =
       const VerificationMeta('projectId');
   @override
   late final GeneratedColumn<int> projectId = GeneratedColumn<int>(
-      'project_id', aliasedName, false,
+      'project_id', aliasedName, true,
       type: DriftSqlType.int,
-      requiredDuringInsert: true,
+      requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES projects_table (id)'));
   @override
@@ -883,22 +883,16 @@ class $TasksTableTable extends TasksTable
           _prioridadeMeta,
           prioridade.isAcceptableOrUnknown(
               data['prioridade']!, _prioridadeMeta));
-    } else if (isInserting) {
-      context.missing(_prioridadeMeta);
     }
     if (data.containsKey('category_id')) {
       context.handle(
           _categoryIdMeta,
           categoryId.isAcceptableOrUnknown(
               data['category_id']!, _categoryIdMeta));
-    } else if (isInserting) {
-      context.missing(_categoryIdMeta);
     }
     if (data.containsKey('project_id')) {
       context.handle(_projectIdMeta,
           projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta));
-    } else if (isInserting) {
-      context.missing(_projectIdMeta);
     }
     return context;
   }
@@ -928,11 +922,11 @@ class $TasksTableTable extends TasksTable
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
       prioridade: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}prioridade'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}prioridade']),
       categoryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}category_id']),
       projectId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}project_id'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}project_id']),
     );
   }
 
@@ -952,9 +946,9 @@ class TasksTableData extends DataClass implements Insertable<TasksTableData> {
   final String? dueHour;
   final DateTime? reminder;
   final String status;
-  final String prioridade;
-  final int categoryId;
-  final int projectId;
+  final String? prioridade;
+  final int? categoryId;
+  final int? projectId;
   const TasksTableData(
       {required this.id,
       required this.createdAt,
@@ -965,9 +959,9 @@ class TasksTableData extends DataClass implements Insertable<TasksTableData> {
       this.dueHour,
       this.reminder,
       required this.status,
-      required this.prioridade,
-      required this.categoryId,
-      required this.projectId});
+      this.prioridade,
+      this.categoryId,
+      this.projectId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -990,9 +984,15 @@ class TasksTableData extends DataClass implements Insertable<TasksTableData> {
       map['reminder'] = Variable<DateTime>(reminder);
     }
     map['status'] = Variable<String>(status);
-    map['prioridade'] = Variable<String>(prioridade);
-    map['category_id'] = Variable<int>(categoryId);
-    map['project_id'] = Variable<int>(projectId);
+    if (!nullToAbsent || prioridade != null) {
+      map['prioridade'] = Variable<String>(prioridade);
+    }
+    if (!nullToAbsent || categoryId != null) {
+      map['category_id'] = Variable<int>(categoryId);
+    }
+    if (!nullToAbsent || projectId != null) {
+      map['project_id'] = Variable<int>(projectId);
+    }
     return map;
   }
 
@@ -1017,9 +1017,15 @@ class TasksTableData extends DataClass implements Insertable<TasksTableData> {
           ? const Value.absent()
           : Value(reminder),
       status: Value(status),
-      prioridade: Value(prioridade),
-      categoryId: Value(categoryId),
-      projectId: Value(projectId),
+      prioridade: prioridade == null && nullToAbsent
+          ? const Value.absent()
+          : Value(prioridade),
+      categoryId: categoryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(categoryId),
+      projectId: projectId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(projectId),
     );
   }
 
@@ -1036,9 +1042,9 @@ class TasksTableData extends DataClass implements Insertable<TasksTableData> {
       dueHour: serializer.fromJson<String?>(json['dueHour']),
       reminder: serializer.fromJson<DateTime?>(json['reminder']),
       status: serializer.fromJson<String>(json['status']),
-      prioridade: serializer.fromJson<String>(json['prioridade']),
-      categoryId: serializer.fromJson<int>(json['categoryId']),
-      projectId: serializer.fromJson<int>(json['projectId']),
+      prioridade: serializer.fromJson<String?>(json['prioridade']),
+      categoryId: serializer.fromJson<int?>(json['categoryId']),
+      projectId: serializer.fromJson<int?>(json['projectId']),
     );
   }
   @override
@@ -1054,9 +1060,9 @@ class TasksTableData extends DataClass implements Insertable<TasksTableData> {
       'dueHour': serializer.toJson<String?>(dueHour),
       'reminder': serializer.toJson<DateTime?>(reminder),
       'status': serializer.toJson<String>(status),
-      'prioridade': serializer.toJson<String>(prioridade),
-      'categoryId': serializer.toJson<int>(categoryId),
-      'projectId': serializer.toJson<int>(projectId),
+      'prioridade': serializer.toJson<String?>(prioridade),
+      'categoryId': serializer.toJson<int?>(categoryId),
+      'projectId': serializer.toJson<int?>(projectId),
     };
   }
 
@@ -1070,9 +1076,9 @@ class TasksTableData extends DataClass implements Insertable<TasksTableData> {
           Value<String?> dueHour = const Value.absent(),
           Value<DateTime?> reminder = const Value.absent(),
           String? status,
-          String? prioridade,
-          int? categoryId,
-          int? projectId}) =>
+          Value<String?> prioridade = const Value.absent(),
+          Value<int?> categoryId = const Value.absent(),
+          Value<int?> projectId = const Value.absent()}) =>
       TasksTableData(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
@@ -1083,9 +1089,9 @@ class TasksTableData extends DataClass implements Insertable<TasksTableData> {
         dueHour: dueHour.present ? dueHour.value : this.dueHour,
         reminder: reminder.present ? reminder.value : this.reminder,
         status: status ?? this.status,
-        prioridade: prioridade ?? this.prioridade,
-        categoryId: categoryId ?? this.categoryId,
-        projectId: projectId ?? this.projectId,
+        prioridade: prioridade.present ? prioridade.value : this.prioridade,
+        categoryId: categoryId.present ? categoryId.value : this.categoryId,
+        projectId: projectId.present ? projectId.value : this.projectId,
       );
   TasksTableData copyWithCompanion(TasksTableCompanion data) {
     return TasksTableData(
@@ -1157,9 +1163,9 @@ class TasksTableCompanion extends UpdateCompanion<TasksTableData> {
   final Value<String?> dueHour;
   final Value<DateTime?> reminder;
   final Value<String> status;
-  final Value<String> prioridade;
-  final Value<int> categoryId;
-  final Value<int> projectId;
+  final Value<String?> prioridade;
+  final Value<int?> categoryId;
+  final Value<int?> projectId;
   const TasksTableCompanion({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -1184,14 +1190,11 @@ class TasksTableCompanion extends UpdateCompanion<TasksTableData> {
     this.dueHour = const Value.absent(),
     this.reminder = const Value.absent(),
     required String status,
-    required String prioridade,
-    required int categoryId,
-    required int projectId,
+    this.prioridade = const Value.absent(),
+    this.categoryId = const Value.absent(),
+    this.projectId = const Value.absent(),
   })  : title = Value(title),
-        status = Value(status),
-        prioridade = Value(prioridade),
-        categoryId = Value(categoryId),
-        projectId = Value(projectId);
+        status = Value(status);
   static Insertable<TasksTableData> custom({
     Expression<int>? id,
     Expression<DateTime>? createdAt,
@@ -1232,9 +1235,9 @@ class TasksTableCompanion extends UpdateCompanion<TasksTableData> {
       Value<String?>? dueHour,
       Value<DateTime?>? reminder,
       Value<String>? status,
-      Value<String>? prioridade,
-      Value<int>? categoryId,
-      Value<int>? projectId}) {
+      Value<String?>? prioridade,
+      Value<int?>? categoryId,
+      Value<int?>? projectId}) {
     return TasksTableCompanion(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
@@ -1887,9 +1890,9 @@ typedef $$TasksTableTableCreateCompanionBuilder = TasksTableCompanion Function({
   Value<String?> dueHour,
   Value<DateTime?> reminder,
   required String status,
-  required String prioridade,
-  required int categoryId,
-  required int projectId,
+  Value<String?> prioridade,
+  Value<int?> categoryId,
+  Value<int?> projectId,
 });
 typedef $$TasksTableTableUpdateCompanionBuilder = TasksTableCompanion Function({
   Value<int> id,
@@ -1901,9 +1904,9 @@ typedef $$TasksTableTableUpdateCompanionBuilder = TasksTableCompanion Function({
   Value<String?> dueHour,
   Value<DateTime?> reminder,
   Value<String> status,
-  Value<String> prioridade,
-  Value<int> categoryId,
-  Value<int> projectId,
+  Value<String?> prioridade,
+  Value<int?> categoryId,
+  Value<int?> projectId,
 });
 
 final class $$TasksTableTableReferences
@@ -1914,9 +1917,9 @@ final class $$TasksTableTableReferences
       db.categoriesTable.createAlias($_aliasNameGenerator(
           db.tasksTable.categoryId, db.categoriesTable.id));
 
-  $$CategoriesTableTableProcessedTableManager get categoryId {
-    final $_column = $_itemColumn<int>('category_id')!;
-
+  $$CategoriesTableTableProcessedTableManager? get categoryId {
+    final $_column = $_itemColumn<int>('category_id');
+    if ($_column == null) return null;
     final manager =
         $$CategoriesTableTableTableManager($_db, $_db.categoriesTable)
             .filter((f) => f.id.sqlEquals($_column));
@@ -1930,9 +1933,9 @@ final class $$TasksTableTableReferences
       db.projectsTable.createAlias(
           $_aliasNameGenerator(db.tasksTable.projectId, db.projectsTable.id));
 
-  $$ProjectsTableTableProcessedTableManager get projectId {
-    final $_column = $_itemColumn<int>('project_id')!;
-
+  $$ProjectsTableTableProcessedTableManager? get projectId {
+    final $_column = $_itemColumn<int>('project_id');
+    if ($_column == null) return null;
     final manager = $$ProjectsTableTableTableManager($_db, $_db.projectsTable)
         .filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_projectIdTable($_db));
@@ -2214,9 +2217,9 @@ class $$TasksTableTableTableManager extends RootTableManager<
             Value<String?> dueHour = const Value.absent(),
             Value<DateTime?> reminder = const Value.absent(),
             Value<String> status = const Value.absent(),
-            Value<String> prioridade = const Value.absent(),
-            Value<int> categoryId = const Value.absent(),
-            Value<int> projectId = const Value.absent(),
+            Value<String?> prioridade = const Value.absent(),
+            Value<int?> categoryId = const Value.absent(),
+            Value<int?> projectId = const Value.absent(),
           }) =>
               TasksTableCompanion(
             id: id,
@@ -2242,9 +2245,9 @@ class $$TasksTableTableTableManager extends RootTableManager<
             Value<String?> dueHour = const Value.absent(),
             Value<DateTime?> reminder = const Value.absent(),
             required String status,
-            required String prioridade,
-            required int categoryId,
-            required int projectId,
+            Value<String?> prioridade = const Value.absent(),
+            Value<int?> categoryId = const Value.absent(),
+            Value<int?> projectId = const Value.absent(),
           }) =>
               TasksTableCompanion.insert(
             id: id,

@@ -16,10 +16,12 @@ class TasksTable extends Table {
   DateTimeColumn get reminder => dateTime().nullable()();
 
   TextColumn get status => text()();
-  TextColumn get prioridade => text()();
+  TextColumn get prioridade => text().nullable()();
 
-  IntColumn get categoryId => integer().references(CategoriesTable, #id)();
-  IntColumn get projectId => integer().references(ProjectsTable, #id)();
+  IntColumn get categoryId =>
+      integer().references(CategoriesTable, #id).nullable()();
+  IntColumn get projectId =>
+      integer().references(ProjectsTable, #id).nullable()();
 }
 
 enum Status {
