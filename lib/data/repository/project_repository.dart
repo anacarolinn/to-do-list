@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:to_do_list/data/db/app_database.dart';
 import 'package:to_do_list/data/db/daos/project_dao.dart';
+import 'package:to_do_list/domain/models/project_model.dart';
 
 part 'project_repository.g.dart';
 
@@ -16,18 +17,23 @@ class ProjectRepository {
 
   ProjectRepository(this.projectDao);
 
-  Future<List<ProjectsTableData>> getAllProjects() async {
+  Future<List<ProjectModel>> getAllProjects() async {
     try {
       final data = await projectDao.getAllProjects();
-      return data;
+      return data.map((e) => ProjectModel.fromEntity(e)).toList();
     } catch (e, s) {
       throw Exception('Error fetching projects: $e\n$s');
     }
   }
 
-  Stream<List<ProjectsTableData>> watchAllProjects() {
+  Stream<List<ProjectModel>> watchAllProjects() {
     try {
-      return projectDao.watchAllProjects();
+      return projectDao
+          .watchAllProjects()
+          .map((data) => data.map((e) => ProjectModel.fromEntity(e)).toList())
+          .handleError((e, s) {
+        throw Exception('Error watching tasks: $e\\n$s');
+      });
     } catch (e, s) {
       throw Stream.error(Exception('Error watch projects: $e\n$s'));
     }
@@ -42,10 +48,10 @@ class ProjectRepository {
     }
   }
 
-  Future<ProjectsTableData?> getProjectsById(int id) async {
+  Future<ProjectModel?> getProjectsById(int id) async {
     try {
       final data = await projectDao.getProjectsById(id);
-      return data;
+      return ProjectModel.fromEntity(data!);
     } catch (e, s) {
       throw Exception('Error fetching projects: $e\n$s');
     }
@@ -69,9 +75,14 @@ class ProjectRepository {
     }
   }
 
-  Stream<List<ProjectsTableData>> searchProjects(String query) {
+  Stream<List<ProjectModel>> searchProjects(String query) {
     try {
-      return projectDao.searchProjects(query);
+      return projectDao
+          .searchProjects(query)
+          .map((data) => data.map((e) => ProjectModel.fromEntity(e)).toList())
+          .handleError((e, s) {
+        throw Exception('Error watching tasks: $e\\n$s');
+      });
     } catch (e, s) {
       throw Stream.error(Exception('Error search projects: $e\n$s'));
     }

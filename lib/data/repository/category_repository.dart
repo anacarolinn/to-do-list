@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:to_do_list/data/db/app_database.dart';
 import 'package:to_do_list/data/db/daos/category_dao.dart';
+import 'package:to_do_list/domain/models/category_model.dart';
 
 part 'category_repository.g.dart';
 
@@ -16,18 +17,23 @@ class CategoryRepository {
 
   CategoryRepository(this.categoryDao);
 
-  Future<List<CategoriesTableData>> getAllCategories() async {
+  Future<List<CategoryModel>> getAllCategories() async {
     try {
       final data = await categoryDao.getAllCategories();
-      return data;
+      return data.map((e) => CategoryModel.fromEntity(e)).toList();
     } catch (e, s) {
       throw Exception('Error fetching categories: $e\n$s');
     }
   }
 
-  Stream<List<CategoriesTableData>> watchAllCategories() {
+  Stream<List<CategoryModel>> watchAllCategories() {
     try {
-      return categoryDao.watchAllCategories();
+      return categoryDao
+          .watchAllCategories()
+          .map((data) => data.map((e) => CategoryModel.fromEntity(e)).toList())
+          .handleError((e, s) {
+        throw Exception('Error watching categories: $e\n$s');
+      });
     } catch (e, s) {
       throw Stream.error(Exception('Error watch categories: $e\n$s'));
     }
@@ -42,10 +48,10 @@ class CategoryRepository {
     }
   }
 
-  Future<CategoriesTableData?> getCategoryById(int id) async {
+  Future<CategoryModel?> getCategoryById(int id) async {
     try {
       final data = await categoryDao.getCategoryById(id);
-      return data;
+      return CategoryModel.fromEntity(data!);
     } catch (e, s) {
       throw Exception('Error fetching categories: $e\n$s');
     }
@@ -69,9 +75,14 @@ class CategoryRepository {
     }
   }
 
-  Stream<List<CategoriesTableData>> searchCategories(String query) {
+  Stream<List<CategoryModel>> searchCategories(String query) {
     try {
-      return categoryDao.searchCategories(query);
+      return categoryDao
+          .searchCategories(query)
+          .map((data) => data.map((e) => CategoryModel.fromEntity(e)).toList())
+          .handleError((e, s) {
+        throw Exception('Error watching categories: $e\n$s');
+      });
     } catch (e, s) {
       throw Stream.error(Exception('Error search categories: $e\n$s'));
     }
